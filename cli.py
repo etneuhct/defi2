@@ -1,5 +1,5 @@
 import re
-
+from gestionTemps import CalculTemps, formatDateHeure, obtenir_valeur_initiale
 
 def obtenir_format_valeur_a_ajouter():
 
@@ -43,16 +43,17 @@ def obtenir_valeur_initiale():
             print("Veuillez rentrer une date au format valide yyyy-MM-jj:hh:mm:ss ou yyyy-MM-jj")
             continue
 
-        return date_initiale
+        return date_initiale, result
 
 
 if __name__ == '__main__':
 
-    d_i = obtenir_valeur_initiale()
+    d_i, format_result = obtenir_valeur_initiale()
     ajouter_nouvelle_valeur = True
     valeurs = {}
 
     while ajouter_nouvelle_valeur:
+
         f_v = obtenir_format_valeur_a_ajouter()
         v = obtenir_valeur_a_ajouter()
 
@@ -61,6 +62,29 @@ if __name__ == '__main__':
         else:
             valeurs[f_v] = valeurs[f_v] + v
 
+        annee, mois, jour, heure, minute, seconde = CalculTemps(d_i, v)
+        print(formatDateHeure(annee, mois, jour, heure, minute, seconde))
+
         ajouter_nouvelle_valeur = input("Souhaitez vous ajouter une nouvelle valeur au calcul ? (o/n)").lower() == 'o'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
