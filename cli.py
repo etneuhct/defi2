@@ -1,90 +1,62 @@
+import argparse
 import re
-from gestionTemps import CalculTemps, formatDateHeure, obtenir_valeur_initiale
 
-def obtenir_format_valeur_a_ajouter():
+arg_format_valeur_ajoutable = ['jour', 'heure', 'mn', 'sec']
+format_attendu = 'Format attendu yyyy-mm-dd:hh:MM:ss ou yyyy-mm-dd'
+message_date_invalide = f'Le format de la date est invalide\n{format_attendu}'
 
+
+class DateFormatInvalid(argparse.ArgumentTypeError):
+    pass
+
+
+def date_validator(date_string):
+    date_regex = '^[0-9]{4}-[0-9]{2}-[0-9]{2}(:[0-9]{2}:[0-9]{2}:[0-9]{2})?$'
+    if not re.match(date_regex, date_string):
+        raise DateFormatInvalid(message_date_invalide)
+    return date_string
+
+
+def set_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-date', required=False, help="Date initiale", type=date_validator)
+    for item in arg_format_valeur_ajoutable:
+        parser.add_argument(f'-{item}', required=False, help=f"Nombre de {item} à ajouter", type=int, default=0)
+    return parser.parse_args()
+
+
+def recuperer_date_initiale():
     while True:
-
-        format_valeur = input("Entrer \n1 Jour\n2 Heure\n3 Minute\n4 Seconde")
-
+        result = input(f'Veuillez renseigner une date. {format_attendu}:\n')
         try:
-            format_valeur = int(format_valeur)
-        except ValueError:
-            print("Veuillez selectionner une des options proposées")
-            continue
-
-        if format_valeur not in range(1, 5):
-            print("Veuillez selectionner un format valide")
-            continue
-
-        return format_valeur
+            date_validator(result)
+            return result
+        except DateFormatInvalid:
+            print(message_date_invalide)
 
 
-def obtenir_valeur_a_ajouter():
-
+def recuperer_valeur_a_ajouter(format_valeur):
     while True:
-        valeur = input("Entrer la valeur à ajouter à la date initiale")
+        result = input(f'Veuillez renseigner un nombre de {format_valeur}:\n')
         try:
-            valeur = int(valeur)
+            result = int(result)
+            return result
         except ValueError:
-            print("Veuiller rentrer une valeur numérique")
-            continue
-        return valeur
-
-
-def obtenir_valeur_initiale():
-    format_court = '[0-9]{4}-[0-9]{2}-[0-9]{2}'
-    format_complet = '[0-9]{4}-[0-9]{2}-[0-9]{2}:[0-9]{2}:[0-9]{2}:[0-9]{2}'
-    while True:
-        date_initiale = input("Inserer la date initiale")
-        result = 0 if re.search(format_court, date_initiale) else 1 if re.search(format_complet, date_initiale) else 2
-
-        if result == 2:
-            print("Veuillez rentrer une date au format valide yyyy-MM-jj:hh:mm:ss ou yyyy-MM-jj")
-            continue
-
-        return date_initiale, result
+            print('Erreur. Une valeur numérique est attendue')
 
 
 if __name__ == '__main__':
+    args = set_arguments()
+    cle_attendues = ['date', *arg_format_valeur_ajoutable]
 
-    d_i, format_result = obtenir_valeur_initiale()
-    ajouter_nouvelle_valeur = True
-    valeurs = {}
+    date, jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter = [
+        getattr(args, i) for i in cle_attendues]
 
-    while ajouter_nouvelle_valeur:
+    if not date:
+        date = recuperer_date_initiale()
 
-        f_v = obtenir_format_valeur_a_ajouter()
-        v = obtenir_valeur_a_ajouter()
-
-        if f_v not in valeurs:
-            valeurs[f_v] = v
-        else:
-            valeurs[f_v] = valeurs[f_v] + v
-
-        annee, mois, jour, heure, minute, seconde = CalculTemps(d_i, v)
-        print(formatDateHeure(annee, mois, jour, heure, minute, seconde))
-
-        ajouter_nouvelle_valeur = input("Souhaitez vous ajouter une nouvelle valeur au calcul ? (o/n)").lower() == 'o'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    if jour_a_ajouter == 0 and heure_a_ajouter == 0 and minute_a_ajouter == 0 and seconde_a_ajouter == 0:
+        jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter = [
+            recuperer_valeur_a_ajouter(i) for i in arg_format_valeur_ajoutable
+        ]
 
