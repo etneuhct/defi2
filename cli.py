@@ -1,6 +1,6 @@
 import argparse
 import re
-
+from gestionTemps import CalculTemps, formatDateHeure
 arg_format_valeur_ajoutable = ['jour', 'heure', 'mn', 'sec']
 format_attendu = 'Format attendu yyyy-mm-dd:hh:MM:ss ou yyyy-mm-dd'
 message_date_invalide = f'Le format de la date est invalide\n{format_attendu}'
@@ -59,4 +59,8 @@ if __name__ == '__main__':
         jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter = [
             recuperer_valeur_a_ajouter(i) for i in arg_format_valeur_ajoutable
         ]
+
+        annee, mois, jour, heure, minute, seconde = CalculTemps(date, jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter)
+
+        formatDateHeure(annee, mois, jour, heure, minute, seconde)
 
