@@ -1,18 +1,12 @@
 import unittest
-import sys
-import os
+from gestionTemps import decompositionDate, decompositionDateComplete, checkBissextile, checkJour, checkHeure, \
+    checkMinute, calculTemps, formatDateHeure
 
-base = os.path.abspath(__file__)
-base = os.path.dirname(os.path.dirname(base))
 
-sys.path.insert(0, os.path.join(base, 'tests', 'gestionTemps'))
-
-from gestionTemps import decompositionDate, decompositionDateComplete, checkBissextile, checkJour, checkHeure, checkMinute, calculTemps, formatDateHeure
-
-class GestionTempsTestCase(unittest.TestCase) :
+class GestionTempsTestCase(unittest.TestCase):
 
     def test_decompositionDate(self):
-        
+
         assert decompositionDate("2021-12-08") == (2021, 12, 8, 0, 0, 0)
         assert decompositionDate("2022-10-18") == (2022, 10, 18, 0, 0, 0)
         assert decompositionDate("2026-05-26") == (2026, 5, 26, 0, 0, 0)
@@ -29,9 +23,9 @@ class GestionTempsTestCase(unittest.TestCase) :
         self.assertTrue(checkBissextile(2024))
         self.assertFalse(checkBissextile(2021))
         self.assertFalse(checkBissextile(2023))
-        
-    def test_checkJour(self): 
-        
+
+    def test_checkJour(self):
+
         self.assertEqual(checkJour(2024, 2, 30), (2024, 3, 1))
         self.assertEqual(checkJour(2023, 2, 29), (2023, 3, 1))
         self.assertEqual(checkJour(2024, 4, 31), (2024, 5, 1))
@@ -53,9 +47,9 @@ class GestionTempsTestCase(unittest.TestCase) :
         self.assertEqual(checkMinute(2028, 4, 30, 24, 62), (2028, 5, 1, 1, 2))
         self.assertEqual(checkMinute(2023, 5, 31, 23, 60), (2023, 6, 1, 0, 0))
         self.assertEqual(checkMinute(2024, 8, 31, 24, 63), (2024, 9, 1, 1, 3))
-        
+
     def test_calculTemps(self):
-        
+
         self.assertEqual(calculTemps("2020-12-27", 5), (2021, 1, 1, 0, 0, 0))
         self.assertEqual(calculTemps("2021-12-27", 5), (2022, 1, 1, 0, 0, 0))
         self.assertEqual(calculTemps("2022-05-19:16:30:00", 7), (2022, 5, 26, 16, 30, 0))
@@ -66,12 +60,3 @@ class GestionTempsTestCase(unittest.TestCase) :
     def test_formatDateHeure(self):
 
         assert formatDateHeure(2020, 12, 27, 14, 30, 0) == ("La date recherchée est : 2020 - 12 - 27 : 14 : 30 : 0 ")
-        assert formatDateHeure(2021, 12, 27, 15, 30, 0) == ("La date recherchée est : 2021 - 12 - 27 : 15 : 30 : 0 ")
-        assert formatDateHeure(2022, 10, 27, 11, 30, 0) == ("La date recherchée est : 2022 - 10 - 27 : 11 : 30 : 0 ")
-        assert formatDateHeure(2031, 5, 27, 15, 30, 0) == ("La date recherchée est : 2031 - 5 - 27 : 15 : 30 : 0 ")
-        assert formatDateHeure(2041, 2, 27, 18, 30, 0) == ("La date recherchée est : 2041 - 2 - 27 : 18 : 30 : 0 ")
-
-
-if __name__== '__main__':
-
-    unittest.main()
