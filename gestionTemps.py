@@ -163,5 +163,6 @@ def calculTemps(arg_date, nb_jours=0, nb_heures=0, nb_minutes=0, nb_secondes=0):
 
 def formatDateHeure(annee, mois, jour, heure=0, minute=0, seconde=0):
     
-    print("La date recherchée est : ", annee, "-", mois, "-", jour, ":", heure, ":", minute, ":", seconde)
+    result = f"La date recherchée est : {annee} - {mois} - {jour} : {heure} : {minute} : {seconde} "
     
+    return result

@@ -2,7 +2,6 @@ import unittest
 import sys
 import os
 
-
 base = os.path.abspath(__file__)
 base = os.path.dirname(os.path.dirname(base))
 
@@ -65,26 +64,14 @@ class GestionTempsTestCase(unittest.TestCase) :
         self.assertEqual(calculTemps("2025-06-15:12:23:34", 5, 3, 7, 6), (2025, 6, 20, 15, 30, 40))
 
     def test_formatDateHeure(self):
-        
-        assert formatDateHeure(2020, 12, 27, 14, 30, 0) == "La date recherchée est : 2020 - 12 - 27 : 14 : 30 : 0"
-        assert formatDateHeure(2021, 12, 27, 15, 30, 0) == "La date recherchée est : 2021 - 12 - 27 : 15 : 30 : 0"
-        assert formatDateHeure(2022, 10, 27, 11, 30, 0) == "La date recherchée est : 2022 - 10 - 27 : 11 : 30 : 0"
-        assert formatDateHeure(2031, 5, 27, 15, 30, 0) == "La date recherchée est : 2031 - 5 - 27 : 15 : 30 : 0"
-        assert formatDateHeure(2041, 2, 27, 18, 30, 0) == "La date recherchée est : 2041 - 2 - 27 : 18 : 30 : 0"
+
+        assert formatDateHeure(2020, 12, 27, 14, 30, 0) == ("La date recherchée est : 2020 - 12 - 27 : 14 : 30 : 0 ")
+        assert formatDateHeure(2021, 12, 27, 15, 30, 0) == ("La date recherchée est : 2021 - 12 - 27 : 15 : 30 : 0 ")
+        assert formatDateHeure(2022, 10, 27, 11, 30, 0) == ("La date recherchée est : 2022 - 10 - 27 : 11 : 30 : 0 ")
+        assert formatDateHeure(2031, 5, 27, 15, 30, 0) == ("La date recherchée est : 2031 - 5 - 27 : 15 : 30 : 0 ")
+        assert formatDateHeure(2041, 2, 27, 18, 30, 0) == ("La date recherchée est : 2041 - 2 - 27 : 18 : 30 : 0 ")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-if __name__== '__main__' :
+if __name__== '__main__':
 
     unittest.main()
