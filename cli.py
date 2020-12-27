@@ -1,7 +1,7 @@
 import argparse
 import re
 from date_time import DateFormatInvalid, DateTime
-from gestionTemps import CalculTemps
+from gestionTemps import calculTemps, formatDateHeure
 
 arg_format_valeur_ajoutable = ['jour', 'heure', 'mn', 'sec']
 format_attendu = 'Format attendu yyyy-mm-dd:hh:MM:ss ou yyyy-mm-dd'
@@ -59,7 +59,7 @@ if __name__ == '__main__':
         jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter = [
             recuperer_valeur_a_ajouter(i) for i in arg_format_valeur_ajoutable]
 
-    annee, mois, jour, heure, minute, seconde = CalculTemps(
+    annee, mois, jour, heure, minute, seconde = calculTemps(
         date, jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter)
 
     nouvelle_date = DateTime(None, annee, mois, jour, heure, minute, seconde)
@@ -69,3 +69,4 @@ if __name__ == '__main__':
           f"{annee}-{mois}-{jour} {heure}:{minute}:{seconde}")
     nouvelle_date.afficher_calendrier()
 
+    formatDateHeure(annee, mois, jour, heure, minute, seconde)
