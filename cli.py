@@ -1,19 +1,19 @@
 import argparse
 import re
-from gestionTemps import CalculTemps, formatDateHeure
+from date_time import DateFormatInvalid, DateTime
+from gestionTemps import CalculTemps
+
 arg_format_valeur_ajoutable = ['jour', 'heure', 'mn', 'sec']
 format_attendu = 'Format attendu yyyy-mm-dd:hh:MM:ss ou yyyy-mm-dd'
 message_date_invalide = f'Le format de la date est invalide\n{format_attendu}'
 
 
-class DateFormatInvalid(argparse.ArgumentTypeError):
-    pass
-
-
 def date_validator(date_string):
-    date_regex = '^[0-9]{4}-[0-9]{2}-[0-9]{2}(:[0-9]{2}:[0-9]{2}:[0-9]{2})?$'
+    date_regex = '^[0-9]{4}-[0-9]{2}-[0-9]{2}(:[0-9]{2}:[0-5][0-9]:[0-5][0-9])?$'
     if not re.match(date_regex, date_string):
         raise DateFormatInvalid(message_date_invalide)
+    else:
+        DateTime(date_string)
     return date_string
 
 
@@ -57,10 +57,15 @@ if __name__ == '__main__':
 
     if jour_a_ajouter == 0 and heure_a_ajouter == 0 and minute_a_ajouter == 0 and seconde_a_ajouter == 0:
         jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter = [
-            recuperer_valeur_a_ajouter(i) for i in arg_format_valeur_ajoutable
-        ]
+            recuperer_valeur_a_ajouter(i) for i in arg_format_valeur_ajoutable]
 
-        annee, mois, jour, heure, minute, seconde = CalculTemps(date, jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter)
+    annee, mois, jour, heure, minute, seconde = CalculTemps(
+        date, jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter)
 
-        formatDateHeure(annee, mois, jour, heure, minute, seconde)
+    nouvelle_date = DateTime(None, annee, mois, jour, heure, minute, seconde)
+    print(f'La date initiale est le {date}')
+    print(f"Dans {jour_a_ajouter} jour(s) {heure_a_ajouter} heure(s) {minute_a_ajouter} minute(s) et "
+          f"{seconde_a_ajouter} seconde(s), ce sera {nouvelle_date.retourne_le_jour_de_la_semaine_str()} "
+          f"{annee}-{mois}-{jour} {heure}:{minute}:{seconde}")
+    nouvelle_date.afficher_calendrier()
 
