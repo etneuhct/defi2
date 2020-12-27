@@ -16,12 +16,10 @@ def decompositionDate(arg_date):
 def decompositionDateComplete(arg_date):
 
     date_obj = arg_date.split(":")
-    print("le type initial de la variable date_obj: ",type(date_obj))
     annee, mois, jour, heure, minute, seconde = decompositionDate(date_obj[0])
     heure = 0
     minute = 0
     seconde = 0
-    print("\nla taille de la chaine de caractere arg_date: \n", len(date_obj))
 
     if len(date_obj) == 1:
 
@@ -76,7 +74,7 @@ def checkJour(annee, mois, jour) :
     if mois == 2 and checkBissextile(annee) and jour >= 29: #ANNEE BISSEXTILE
 
             mois = mois +1
-            
+
             if jour == 29:
                 jour = 1
 
@@ -135,8 +133,8 @@ def checkMinute(annee, mois, jour, heure, minute):
 
 def CalculTemps(arg_date, nb_jours =0, nb_heures=0, nb_minutes=0, nb_secondes=0) :
 
-    
-    
+
+
     annee, mois, jour, heure, minute, seconde = decompositionDateComplete(arg_date)
 
     ##### ADDITION DU JOUR
@@ -185,8 +183,8 @@ def CalculTemps(arg_date, nb_jours =0, nb_heures=0, nb_minutes=0, nb_secondes=0)
 def formatDateHeure(annee, mois, jour, heure=0, minute=0, seconde=0) :
 
     print("La date recherchée est : ",annee,"-",mois,"-",jour,":",heure,":",minute,":",seconde)
-    
-    
+
+
 
 
 
