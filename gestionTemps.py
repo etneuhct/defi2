@@ -1,11 +1,7 @@
 
 
-def decompositionDate(arg_date) :
+def decompositionDate(arg_date):
 
-
-    #Liste_Mois= ["Janvier", "Fevrier", "Mars","Avril","Mai", "Juin", "Juillet", "Aout","Septembre","Octobre",
-                # "Novembre", "Decembre"]
-    #arg_date = str(arg_date)
     date_obj = arg_date.split("-")
     annee = int(date_obj[0])
     mois = int(date_obj[1])
@@ -17,7 +13,7 @@ def decompositionDate(arg_date) :
     return annee, mois, jour, heure, minute, seconde
 
 
-def decompositionDateComplete(arg_date) :
+def decompositionDateComplete(arg_date):
 
     date_obj = arg_date.split(":")
     print("le type initial de la variable date_obj: ",type(date_obj))
@@ -43,13 +39,23 @@ def decompositionDateComplete(arg_date) :
         if date_obj[3] != "":
             seconde = int(date_obj[3])
 
-    #print("Les arguments à l'entrée de la fonction decompositionDateComplete : ", annee,"\n", mois,"\n", jour,"\n", heure,"\n", minute,"\n", seconde,"\n")
-
     return annee, mois, jour, heure, minute, seconde
 
 
+def checkBissextile(annee):
+
+    bissextile= False
+
+    if annee % 4 ==0 and annee % 100 !=0 or annee % 400 ==0:
+
+        bissextile=True
+
+    return bissextile
+
+
+
 def checkJour(annee, mois, jour) :
-    print("\nles annee et mois à l'entree de la fonction CheckJour est: ",jour, annee,mois)
+
 
     if mois in [1,3,5,7,8,10,12] and jour >= 31:
 
@@ -67,7 +73,7 @@ def checkJour(annee, mois, jour) :
 
                 jour = jour - 30
 
-    if mois == 2 and (annee == 2020 or annee == 2020 + 4) and jour >= 29: #ANNEE BISSEXTILE
+    if mois == 2 and checkBissextile(annee) and jour >= 29: #ANNEE BISSEXTILE
 
             mois = mois +1
             
@@ -79,8 +85,7 @@ def checkJour(annee, mois, jour) :
                 jour = jour - 28
 
 
-
-    if mois == 2 and (annee == 2021 or annee == 2022 or annee == 2023) and jour >= 28:
+    if mois == 2 and not checkBissextile(annee) and jour >= 28:
 
             mois = mois + 1
             if jour == 28:
@@ -100,8 +105,6 @@ def checkJour(annee, mois, jour) :
 
                 jour = jour - 29
 
-
-    print("\nle annee,mois à la sortie de la fonction CheckJour est: ",jour, annee,mois)
 
     return annee, mois, jour
 
@@ -140,7 +143,6 @@ def CalculTemps(arg_date, nb_jours =0, nb_heures=0, nb_minutes=0, nb_secondes=0)
 
     if nb_jours != 0 :
         jour = jour + nb_jours
-        #print("valeur de la variable jour dasn calculTemps avant l'appelle à CheckJour : ", jour )
 
         annee, mois, jour = checkJour(annee, mois, jour)
 
@@ -150,7 +152,6 @@ def CalculTemps(arg_date, nb_jours =0, nb_heures=0, nb_minutes=0, nb_secondes=0)
     if nb_heures != 0 :
 
         heure =heure + nb_heures
-
 
         annee, mois, jour, heure = checkHeure(annee, mois, jour, heure)
 
@@ -177,10 +178,7 @@ def CalculTemps(arg_date, nb_jours =0, nb_heures=0, nb_minutes=0, nb_secondes=0)
             annee, mois, jour, heure, minute = checkMinute(annee, mois, jour, heure, minute)
 
 
-
     return   annee, mois, jour, heure, minute, seconde
-
-
 
 
 
