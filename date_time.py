@@ -94,6 +94,8 @@ class DateTime:
         jour_de_la_semaine = diff_en_jour + jour_de_la_semaine_reference
         if jour_de_la_semaine < 0:
             jour_de_la_semaine = 7 + jour_de_la_semaine
+        if jour_de_la_semaine >= 7:
+            jour_de_la_semaine = jour_de_la_semaine%7
         return jour_de_la_semaine
 
     def retourne_le_jour_de_la_semaine_str(self):

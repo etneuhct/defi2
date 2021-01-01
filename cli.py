@@ -68,5 +68,3 @@ if __name__ == '__main__':
           f"{seconde_a_ajouter} seconde(s), ce sera {nouvelle_date.retourne_le_jour_de_la_semaine_str()} "
           f"{annee}-{mois}-{jour} {heure}:{minute}:{seconde}")
     nouvelle_date.afficher_calendrier()
-
-    formatDateHeure(annee, mois, jour, heure, minute, seconde)
