@@ -47,77 +47,144 @@ def checkBissextile(annee):
     return bissextile
 
 
-def checkJour(annee, mois, jour):
+def verifieJourAnneeBissextile(mois, jour):
+
+    dico_annee_biss = {1: 31, 2: 29, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
+
+    mois2 = mois
+
+    for i in dico_annee_biss.keys():
+        print("valeurs de i: ", dico_annee_biss[i])
+        if i == mois2 and jour > dico_annee_biss[i]:
+            while (jour > dico_annee_biss[i]):
+
+                jour = jour - dico_annee_biss[i]
+
+                i += 1
+
+                print("voici les valeurs de jour: ", jour)
+
+                if i == 13:
+                    i = 1
+                elif i > 13:
+                    i = i - 12
+
+                mois2 = i
+
+    mois = mois2
+
+    print("le mois et le nombre de jour à la sortie de la premierère boucle: ", mois, "\n", jour)
     
-    if mois in [1, 3, 5, 7, 8, 10, 12] and jour >= 32:
+    return mois, jour
 
-        mois = mois + 1
 
-        if mois == 13:
-            annee = annee + 1
-            mois = 1
+def verifieJourAnneeNonBissextile(mois, jour):
 
-        if jour == 32:
-            jour = 1
+    
+    dico_annee_non_biss = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
+    mois2 = mois
 
-        else:
+    for i in dico_annee_non_biss.keys():
 
-            jour = jour - 31
+        print("valeurs de i : ", dico_annee_non_biss[i])
 
-    if mois == 2 and checkBissextile(annee) and jour >= 30:  # ANNEE BISSEXTILE
+        if i == mois2 and jour > dico_annee_non_biss[i]:
 
-        mois = mois + 1
+            while jour > dico_annee_non_biss[i]:
 
-        if jour == 30:
-            jour = 1
+                jour = jour - dico_annee_non_biss[i]
 
-        else:
+                i += 1
 
-            jour = jour - 29
+                print("voici les valeurs", i, " de jour: ", jour)
 
-    if mois == 2 and not checkBissextile(annee) and jour >= 29:
+                if i == 13:
+                    i = 1
+                elif i > 13:
+                    i = i - 12
 
-        mois = mois + 1
-        if jour == 29:
-            jour = 1
+                mois2 = i
 
-        else:
+            jour = jour
 
-            jour = jour - 28
+    mois = mois2
+    
+    return mois, jour
 
-    if mois in [4, 6, 9, 11] and jour >= 31:
+def checkJour(annee, mois, jour):
 
-        mois = mois + 1
-        if jour == 31:
-            jour = 1
+    bissextile = checkBissextile(annee)
+    #dico_annee_biss= {1:31, 2:29, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
+    #dico_annee_non_biss = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
+    
+    if bissextile:
 
-        else:
+        nb_annee= jour //366
+        jour = jour % 366
+        annee = annee + nb_annee
+    else:
 
-            jour = jour - 30
+        nb_annee = jour // 365
+        jour = jour % 365
+        annee = annee + nb_annee
 
+    bissextile2 = checkBissextile(annee)
+
+    if mois in [1, 3, 5, 7, 8, 10, 12]:
+
+        if jour > 31:
+            if bissextile2:
+                mois, jour = verifieJourAnneeBissextile(mois, jour)
+            else :
+
+                mois, jour = verifieJourAnneeNonBissextile(mois, jour)
+                
+                
+    if mois == 2 and bissextile2:
+        if jour > 29:
+
+            mois, jour = verifieJourAnneeBissextile(mois, jour)
+
+    if mois == 2 and not bissextile2:
+        if jour > 28:
+
+            mois, jour = verifieJourAnneeNonBissextile(mois, jour)
+
+    if mois in [4, 6, 9, 11]:
+
+        if jour > 30:
+            if bissextile2:
+                
+                mois, jour = verifieJourAnneeBissextile(mois, jour)
+                
+            else:
+
+                mois, jour = verifieJourAnneeNonBissextile(mois, jour)
+                
+                
     return annee, mois, jour
 
 
 def checkHeure(annee, mois, jour, heure):
     
     if heure >= 24:
-        jour = jour + 1
+        jour = jour + (heure//24)
 
-        heure = heure - 24
+        heure = heure % 24
 
-        annee, mois, jour = checkJour(annee, mois, jour)
-
+    annee, mois, jour = checkJour(annee, mois, jour)
+    
     return annee, mois, jour, heure
 
 
 def checkMinute(annee, mois, jour, heure, minute):
     
     if minute >= 60:
-        minute = minute - 60
-        heure = heure + 1
+        heure = heure + (minute // 60)
+        minute = minute % 60
 
-        annee, mois, jour, heure = checkHeure(annee, mois, jour, heure)
-
+    annee, mois, jour, heure = checkHeure(annee, mois, jour, heure)
+    
     return annee, mois, jour, heure, minute
 
 
@@ -153,10 +220,12 @@ def calculTemps(arg_date, nb_jours=0, nb_heures=0, nb_minutes=0, nb_secondes=0):
         seconde = seconde + nb_secondes
 
         if seconde >= 60:
-            seconde = seconde - 60
-            minute = minute + 1
-
+            
+            minute = minute + (seconde // 60)
+            seconde = seconde % 60
+            
             annee, mois, jour, heure, minute = checkMinute(annee, mois, jour, heure, minute)
+            
 
     return annee, mois, jour, heure, minute, seconde
 
