@@ -54,15 +54,13 @@ def verifieJourAnneeBissextile(mois, jour):
     mois2 = mois
 
     for i in dico_annee_biss.keys():
-        print("valeurs de i: ", dico_annee_biss[i])
+        
         if i == mois2 and jour > dico_annee_biss[i]:
             while (jour > dico_annee_biss[i]):
 
                 jour = jour - dico_annee_biss[i]
 
                 i += 1
-
-                print("voici les valeurs de jour: ", jour)
 
                 if i == 13:
                     i = 1
@@ -72,8 +70,6 @@ def verifieJourAnneeBissextile(mois, jour):
                 mois2 = i
 
     mois = mois2
-
-    print("le mois et le nombre de jour à la sortie de la premierère boucle: ", mois, "\n", jour)
     
     return mois, jour
 
@@ -86,8 +82,6 @@ def verifieJourAnneeNonBissextile(mois, jour):
 
     for i in dico_annee_non_biss.keys():
 
-        print("valeurs de i : ", dico_annee_non_biss[i])
-
         if i == mois2 and jour > dico_annee_non_biss[i]:
 
             while jour > dico_annee_non_biss[i]:
@@ -95,8 +89,6 @@ def verifieJourAnneeNonBissextile(mois, jour):
                 jour = jour - dico_annee_non_biss[i]
 
                 i += 1
-
-                print("voici les valeurs", i, " de jour: ", jour)
 
                 if i == 13:
                     i = 1
@@ -114,8 +106,6 @@ def verifieJourAnneeNonBissextile(mois, jour):
 def checkJour(annee, mois, jour):
 
     bissextile = checkBissextile(annee)
-    #dico_annee_biss= {1:31, 2:29, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
-    #dico_annee_non_biss = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
     
     if bissextile:
 
