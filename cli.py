@@ -20,6 +20,8 @@ def date_validator(date_string):
 def set_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('-date', required=False, help="Date initiale", type=date_validator)
+    parser.add_argument('-fi', required=False, help="Fuseau horaire de la date initiale", type=int, default=0)
+    parser.add_argument('-fr', required=False, help="Fuseau horaire de la date de retour", type=int, default=0)
     for item in arg_format_valeur_ajoutable:
         parser.add_argument(f'-{item}', required=False, help=f"Nombre de {item} à ajouter", type=int, default=0)
     return parser.parse_args()
@@ -52,6 +54,9 @@ if __name__ == '__main__':
     date, jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter = [
         getattr(args, i) for i in cle_attendues]
 
+    fuseau_initial = getattr(args, 'fi')
+    fuseau_retour = getattr(args, 'fr')
+
     if not date:
         date = recuperer_date_initiale()
 
@@ -59,12 +64,13 @@ if __name__ == '__main__':
         jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter = [
             recuperer_valeur_a_ajouter(i) for i in arg_format_valeur_ajoutable]
 
+    heure_a_ajouter = heure_a_ajouter + (fuseau_retour - fuseau_initial)
     annee, mois, jour, heure, minute, seconde = calculTemps(
         date, jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter)
 
     nouvelle_date = DateTime(None, annee, mois, jour, heure, minute, seconde)
-    print(f'La date initiale est le {date}')
+    print(f'La date initiale est le {date} UTC {fuseau_initial}')
     print(f"Dans {jour_a_ajouter} jour(s) {heure_a_ajouter} heure(s) {minute_a_ajouter} minute(s) et "
           f"{seconde_a_ajouter} seconde(s), ce sera {nouvelle_date.retourne_le_jour_de_la_semaine_str()} "
-          f"{annee}-{mois}-{jour} {heure}:{minute}:{seconde}")
+          f"{annee}-{mois}-{jour} {heure}:{minute}:{seconde} UTC {fuseau_retour}")
     nouvelle_date.afficher_calendrier()
