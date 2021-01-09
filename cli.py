@@ -1,7 +1,7 @@
 import argparse
 import re
 from date_time import DateFormatInvalid, DateTime
-from gestionTemps import calculAdditionTemps, formatDateHeure, calculSoustrationTemps
+from gestionTemps import calculAdditionTemps, calculSoustrationTemps
 
 arg_format_valeur_ajoutable = ['jour', 'heure', 'mn', 'sec']
 format_attendu = 'Format attendu yyyy-mm-dd:hh:MM:ss ou yyyy-mm-dd'
@@ -64,14 +64,14 @@ if __name__ == '__main__':
         jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter = [
             recuperer_valeur_a_ajouter(i) for i in arg_format_valeur_ajoutable]
 
-    heure_a_ajouter = heure_a_ajouter + (fuseau_retour - fuseau_initial)
+    heure_a_ajouter_plus_decalage = heure_a_ajouter + (fuseau_retour - fuseau_initial)
     
-    if heure_a_ajouter<0:
+    if heure_a_ajouter_plus_decalage < 0:
         annee, mois, jour, heure, minute, seconde = calculSoustrationTemps(
-            date,  heure_a_ajouter, minute_a_ajouter)
+            date,  heure_a_ajouter_plus_decalage, minute_a_ajouter)
     else:   
         annee, mois, jour, heure, minute, seconde = calculAdditionTemps(
-        date, jour_a_ajouter, heure_a_ajouter, minute_a_ajouter, seconde_a_ajouter)
+        date, jour_a_ajouter, heure_a_ajouter_plus_decalage, minute_a_ajouter, seconde_a_ajouter)
 
     nouvelle_date = DateTime(None, annee, mois, jour, heure, minute, seconde)
     print(f'La date initiale est le {date} UTC {fuseau_initial}')
