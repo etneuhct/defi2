@@ -1,6 +1,6 @@
 import unittest
 from gestionTemps import decompositionDate, decompositionDateComplete, verifieBissextile, rectifieJour, rectifieHeure, \
-    rectifieMinute, calculTemps, formatDateHeure, verifieJourAnneeBissextile, verifieJourAnneeNonBissextile
+    rectifieMinute, calculAdditionTemps, formatDateHeure, verifieJourAnneeBissextile, verifieJourAnneeNonBissextile
 
 
 class GestionTempsTestCase(unittest.TestCase):
@@ -48,14 +48,14 @@ class GestionTempsTestCase(unittest.TestCase):
         self.assertEqual(rectifieMinute(2023, 5, 31, 23, 60), (2023, 6, 1, 0, 0))
         self.assertEqual(rectifieMinute(2024, 8, 31, 24, 63), (2024, 9, 1, 1, 3))
 
-    def test_calculTemps(self):
+    def test_calculAdditionTemps(self):
 
-        self.assertEqual(calculTemps("2021-02-28", 1200), (2024, 6, 12, 0, 0, 0))
-        self.assertEqual(calculTemps("2019-12-13", 900), (2021, 6, 1, 0, 0, 0))
-        self.assertEqual(calculTemps("2018-11-14:06:32:21", 74, 5, 45), (2018, 1, 27, 12, 17, 21))
-        self.assertEqual(calculTemps("2023-07-27", 0, 3, 43, 15), (2023, 7, 27, 3, 43, 15))
-        self.assertEqual(calculTemps("2020-12-27:13:30:00", 0, 0, 30), (2020, 12, 27, 14, 0, 0))
-        self.assertEqual(calculTemps("2025-06-15:12:23:34", 5, 3, 7, 6), (2025, 6, 20, 15, 30, 40))
+        self.assertEqual(calculAdditionTemps("2021-02-28", 1200), (2024, 6, 12, 0, 0, 0))
+        self.assertEqual(calculAdditionTemps("2019-12-13", 900), (2021, 6, 1, 0, 0, 0))
+        self.assertEqual(calculAdditionTemps("2018-11-14:06:32:21", 74, 5, 45), (2018, 1, 27, 12, 17, 21))
+        self.assertEqual(calculAdditionTemps("2023-07-27", 0, 3, 43, 15), (2023, 7, 27, 3, 43, 15))
+        self.assertEqual(calculAdditionTemps("2020-12-27:13:30:00", 0, 0, 30), (2020, 12, 27, 14, 0, 0))
+        self.assertEqual(calculAdditionTemps("2025-06-15:12:23:34", 5, 3, 7, 6), (2025, 6, 20, 15, 30, 40))
 
 
 
@@ -66,15 +66,15 @@ class GestionTempsTestCase(unittest.TestCase):
         
     def test_verifieJourAnneeNonBissextile(self):
         
-        self.assertEqual(verifieJourAnneeNonBissextile(2, 45), (3, 17))
-        self.assertEqual(verifieJourAnneeNonBissextile(7, 50), (8, 19))
-        self.assertEqual(verifieJourAnneeNonBissextile(8, 32), (9, 1))
+        self.assertEqual(verifieJourAnneeNonBissextile(2019, 2, 45), (2019,3, 17))
+        self.assertEqual(verifieJourAnneeNonBissextile(2023, 7, 50), (2023 ,8, 19))
+        self.assertEqual(verifieJourAnneeNonBissextile(2021, 8, 32), (2021,9, 1))
         
     def test_verifieJourAnneeBissextile(self):
         
-        self.assertEqual(verifieJourAnneeBissextile(2, 45), (3, 16))
-        self.assertEqual(verifieJourAnneeBissextile(9, 70), (11, 9))
-        self.assertEqual(verifieJourAnneeBissextile(5, 54), (6, 23))
+        self.assertEqual(verifieJourAnneeBissextile(2020, 2, 56), (2020 ,3, 27))
+        self.assertEqual(verifieJourAnneeBissextile(2024, 9, 78), (2024 ,11, 17))
+        self.assertEqual(verifieJourAnneeBissextile(2028, 5, 89), (2028 ,7, 28))
 
 
 
